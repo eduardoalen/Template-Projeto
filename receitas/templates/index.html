@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-6">
+        <form method="get" class="row g-3">
+            <div class="col-md-6">
+                <select name="categoria" class="form-select">
+                    <option value="">Todas as categorias</option>
+                    {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}" {% if request.GET.categoria == categoria.id|stringformat:"s" %}selected{% endif %}>
+                            {{ categoria.nome }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <select name="dificuldade" class="form-select">
+                    <option value="">Todas as dificuldades</option>
+                    <option value="F" {% if request.GET.dificuldade == "F" %}selected{% endif %}>Fácil</option>
+                    <option value="M" {% if request.GET.dificuldade == "M" %}selected{% endif %}>Médio</option>
+                    <option value="D" {% if request.GET.dificuldade == "D" %}selected{% endif %}>Difícil</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+                <a href="{% url 'index' %}" class="btn btn-secondary">Limpar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    {% for receita in receitas %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            {% if receita.imagem %}
+                <img src="{{ receita.imagem.url }}" class="card-img-top" alt="{{ receita.titulo }}">
+            {% else %}
+                <img src="https://via.placeholder.com/300x200?text=Sem+Imagem" class="card-img-top" alt="Sem imagem">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ receita.titulo }}</h5>
+                <p class="card-text">
+                    <span class="dificuldade-{{ receita.dificuldade_display|lower }}">
+                        {{ receita.get_dificuldade_display }}
+                    </span>
+                    • {{ receita.tempo_preparo }} min
+                </p>
+                <p class="card-text"><small class="text-muted">Criado em {{ receita.data_criacao|date:"d/m/Y" }}</small></p>
+                <a href="{% url 'detalhes_receita' receita.pk %}" class="btn btn-success">Ver Receita</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">Nenhuma receita encontrada.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

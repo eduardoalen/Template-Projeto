@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h2>{% if form.instance.pk %}Editar{% else %}Nova{% endif %} Categoria</h2>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.nome.id_for_label }}" class="form-label">Nome da Categoria</label>
+                        {{ form.nome }}
+                        {% if form.nome.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.nome.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <a href="{% url 'index' %}" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Adiciona classes Bootstrap aos campos do formulário
+    document.querySelectorAll('input').forEach(element => {
+        if (!element.classList.contains('btn')) {
+            element.classList.add('form-control');
+        }
+    });
+    
+    // Adiciona classe is-invalid para campos com erro
+    document.querySelectorAll('.invalid-feedback').forEach(feedback => {
+        const inputId = feedback.id.replace('_errors', '');
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.classList.add('is-invalid');
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h2>{% if form.instance.pk %}Editar{% else %}Cadastrar{% endif %} Receita</h2>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.titulo.id_for_label }}" class="form-label">Título</label>
+                        {{ form.titulo }}
+                        {% if form.titulo.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.titulo.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.ingredientes.id_for_label }}" class="form-label">Ingredientes</label>
+                        {{ form.ingredientes }}
+                        {% if form.ingredientes.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.ingredientes.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.modo_preparo.id_for_label }}" class="form-label">Modo de Preparo</label>
+                        {{ form.modo_preparo }}
+                        {% if form.modo_preparo.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.modo_preparo.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.tempo_preparo.id_for_label }}" class="form-label">Tempo (min)</label>
+                            {{ form.tempo_preparo }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.rendimento.id_for_label }}" class="form-label">Rendimento</label>
+                            {{ form.rendimento }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ form.dificuldade.id_for_label }}" class="form-label">Dificuldade</label>
+                            {{ form.dificuldade }}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.categoria.id_for_label }}" class="form-label">Categoria</label>
+                            {{ form.categoria }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.imagem.id_for_label }}" class="form-label">Imagem</label>
+                            {{ form.imagem }}
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <a href="{% url 'index' %}" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Adiciona classes Bootstrap aos campos do formulário
+    document.querySelectorAll('input, select, textarea').forEach(element => {
+        if (!element.classList.contains('btn')) {
+            element.classList.add('form-control');
+        }
+    });
+    
+    // Adiciona classe is-invalid para campos com erro
+    document.querySelectorAll('.invalid-feedback').forEach(feedback => {
+        const inputId = feedback.id.replace('_errors', '');
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.classList.add('is-invalid');
+        }
+    });
+</script>
+{% endblock %}
