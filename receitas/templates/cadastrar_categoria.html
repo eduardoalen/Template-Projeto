@@ -28,22 +28,4 @@
         </div>
     </div>
 </div>
-
-<script>
-    // Adiciona classes Bootstrap aos campos do formulário
-    document.querySelectorAll('input').forEach(element => {
-        if (!element.classList.contains('btn')) {
-            element.classList.add('form-control');
-        }
-    });
-    
-    // Adiciona classe is-invalid para campos com erro
-    document.querySelectorAll('.invalid-feedback').forEach(feedback => {
-        const inputId = feedback.id.replace('_errors', '');
-        const input = document.getElementById(inputId);
-        if (input) {
-            input.classList.add('is-invalid');
-        }
-    });
-</script>
 {% endblock %}

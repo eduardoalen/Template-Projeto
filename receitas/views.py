@@ -98,10 +98,7 @@ def cadastrar_categoria(request):
     else:
         form = CategoriaForm()
     
-    context = {
-        'form': form,
-    }
-    return render(request, 'cadastrar_receita.html', context)
+    return render(request, 'cadastrar_categoria.html', {'form': form})
 
 
 @login_required  # Adicione esta linha antes da view
